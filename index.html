@@ -18,12 +18,20 @@
 
 <body>
     <div class="wrapper">
-        <header>
-            <h1>WORD GUESS</h1>
-            <h2>GAME OF THRONES EDITION</h2>
+        <header class="background">
+            <div class="header">
+                <h1>WORD GUESS</h1>
+                <h2>GAME OF THRONES EDITION</h2>
+            </div>
         </header>
-    
+
         <main>
+            <div id="instructions">
+                <p>Words are made up of letters, spaces and apostrophes.  We'll spot you the spaces and apostrophes, so you only have to guess the letters.  To play, simply press any letter on your keyboard!</p>
+
+                <p>Guess carefully.  You only get 10 tries!</p>
+            </div>
+            
             <div id="the-word">
                 <div class="letter" id="L0"> </div>
                 <div class="letter" id="L1"> </div>
@@ -42,14 +50,39 @@
                 <div class="letter" id="L14"> </div>
                 <div class="letter" id="L15"> </div>
             </div>
+
+            <div style="background: blue; margin-bottom: 60px;">
+            <p>You have selected: <span id="your-guesses"></span></p>
+            <p>You have played: <span id="game-count">0</span> games</p>
+            <p>You have solved: <span id="win-count">0</span> words</p>
+            <p>You have lost: <span id="lost-count">0</span> times</p>
+            </div>
+
+            <center>
+                <div class="button-bar">
+                    <button onmouseclick = "console.log ('button clicked');">
+                        RESET
+                    </button>
+        
+                    <button>
+                        HINT
+                    </button>
+                
+                    <button>
+                        HIDE INSTRUCTIONS
+                    </button>
+                </div>
+            </center>    
         </main>
+
+        <div class="push"></div>
     </div>
 
     <footer>
         Copyright&copy;
     </footer>
 </body>
-
+    
 <script src="assets/javascript/game.js"
         language="javascript">
 </script>
