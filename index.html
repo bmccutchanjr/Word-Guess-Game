@@ -26,10 +26,33 @@
         </header>
 
         <main>
+            <center>
+                <div class="button-bar">
+                    <button id="play-button"
+                            onclick="theGame.playGame();">
+                        PLAY
+                    </button>
+
+                    <button onclick="theGame.resetStats();">
+                        RESET
+                    </button>
+                    
+                    <button onclick="theGame.getHint();">
+                        HINT
+                    </button>
+                        
+                    <button id="hide-button"
+                            onclick="theGame.hideInstructions();">
+                        HIDE INSTRUCTIONS
+                    </button>
+                </div>
+            </center>    
+
             <div id="instructions">
+                <h3>How To Play:</h3>
                 <p>Words are made up of letters, spaces and apostrophes.  We'll spot you the spaces and apostrophes, so you only have to guess the letters.  To play, simply press any letter on your keyboard!</p>
 
-                <p>Guess carefully.  You only get 10 tries!</p>
+                <p>Guess carefully.  You only get 10 tries!  If you get stuck, try a HINT.</p>
             </div>
             
             <div id="the-word">
@@ -51,33 +74,28 @@
                 <div class="letter" id="L15"> </div>
             </div>
 
-            <div style="background: blue; margin-bottom: 60px;">
             <p>You have selected: <span id="your-guesses"></span></p>
+            <p id="miss-p">You have <span id="miss-count"></span> tries remaining</p>
             <p>You have played: <span id="game-count">0</span> games</p>
             <p>You have solved: <span id="win-count">0</span> words</p>
             <p>You have lost: <span id="lost-count">0</span> times</p>
-            </div>
-
-            <center>
-                <div class="button-bar">
-                    <button onmouseclick = "console.log ('button clicked');">
-                        RESET
-                    </button>
-        
-                    <button>
-                        HINT
-                    </button>
-                
-                    <button>
-                        HIDE INSTRUCTIONS
-                    </button>
-                </div>
-            </center>    
         </main>
 
         <div class="push"></div>
     </div>
 
+    <!--audio controls>
+        <source id="ding" src-"assets/ding.wav" type="audio/wav">
+    </audio>
+    <audio controls>
+        <source id="dong" src-"assets/dong.wav" type="audio/wav">
+    </audio>
+    <audio id="tada" controls autoplay>
+        <source src-"tada.wav" type="audio/wav">
+    </audio>
+    <audio controls>
+        <source id="bloop" src-"assets/bloop.wav" type="audio/wav">
+    </audio-->
     <footer>
         Copyright&copy;
     </footer>

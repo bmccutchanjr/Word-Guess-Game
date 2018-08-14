@@ -1,6 +1,6 @@
 var theGame =
 {   wordList:  ["ARYA",
-                "BRAAZOS",
+                "BRAAVOS",
                 "CATELYN",
                 "CERSEI",
                 "DAENERYS",
@@ -25,7 +25,7 @@ var theGame =
                 "LADY",
                 "LITTLEFINGER",
                 "LORD",
-                "SAM TULLY",
+                "SAMWELL TARLEY",
                 "SANSA",
                 "SIR JORAH",
                 "TARGARYEN",
@@ -49,36 +49,51 @@ var theGame =
     letterList: "",
     gameCount: 0,
     lostCount: 0,
-    missCount: 0,
+    missCount: 10,
     winCount: 0,
     maxLength: 16,  // The longest string in wordList is 16 characters long
+
+    // begin button methods
+    //
+    // The methods implement the buttons
 
     resetStats: function ()
     {   // This method is called to reset the game statistics
 
-        this.theWord = "*";
-        this.theGuess = "*";
-        this.letterList = "*";
+        this.letterList = "";
+        document.getElementById ("your-guesses").innerHTML = this.letterList;
         this.gameCount = 0;
-        this.missCount = 0;
+        document.getElementById ("game-count").innerHTML = this.gameCount;
+        this.lostCount = 0;
+        document.getElementById ("lost-count").innerHTML = this.lostCount;
+        this.missCount = 10;
+        document.getElementById ("miss-count").innerHTML = this.missCount;
         this.winCount = 0;
+        document.getElementById ("win-count").innerHTML = this.winCount;
     },
 
-    toggleInstructionsVisibility: function ()
+    getHint: function ()
+    {   // This method is called to reset the game statistics
+
+        var x = Math.floor (Math.random () * this.theWord.length);
+        alert ("Try:\n\n " + this.theWord.charAt (x).toUpperCase());
+    },
+
+    hideInstructions: function ()
     {   // This method will alter the 'display' property of the game instructions to either
         // hide or show them, depending on the current value of the display property.  It also
         // toggles the text of the button between "HIDE INSTRUCTIONS" and "SHOW INSTRUCTIONS"
         // to the appropriate text for new value of display.
-            
+
         var instrID = document.getElementById("instructions");
-        var buttonID = document.getElementById("button");
+        var buttonID = document.getElementById("hide-button");
             
         if (instrID.style.display == "none")
         {   // The instructions are hidden.
             // *    change the display property to make the instructions visible
             // *    change the button text to "HIDE INSTRUCTIONS"
 
-            instrID.style.display = "flex";
+            instrID.style.display = "block";
             buttonID.innerHTML = "HIDE INSTRUCTIONS";
         }
         else
@@ -87,6 +102,12 @@ var theGame =
         }
     },
 
+    // end button methods
+
+    // begin game play methods
+    //
+    // The following methods implement the game play
+
     initializeTheGame: function ()
     {   // resets all of the game pieces and temporary variables used to track the players
         // guesses
@@ -94,7 +115,7 @@ var theGame =
         this.theGuess = "";
         this.letterList = "";
         document.getElementById ("your-guesses").innerHTML = "";
-        this.missCount = 0;
+        this.missCount = 10;
 
         // Hide the entire game board and clear any text displayed in each game space
 
@@ -103,12 +124,27 @@ var theGame =
     
             var thisLetter = document.getElementById(idName);
             thisLetter.innerHTML = "";
+            thisLetter.style.color = "black";
             thisLetter.style.display = "none";
             thisLetter.style.visibility = "visible";
         }
+
+        var missCount = document.getElementById("miss-count");
+        var missP = document.getElementById("miss-p");
+
+        missCount.innerHTML = this.missCount;
+        missCount.style.color = "black";
+        missP.style.color = "black";
+        missCount.style.fontWeight = "normal";
+        missP.style.fontWeight = "normal";
+
+        // The play button should only be visible if the player
+        // missed the last word
+
+        document.getElementById ("play-button").style.display = "none";
     },
 
-    selectWord: function ()
+    playGame: function ()
     {   // select a new word display a blank game board
 
         this.initializeTheGame ();
@@ -145,9 +181,46 @@ var theGame =
         }
     },
 
+    youLose: function ()
+    {   // If the player didn't guess the word in the allowed number of tries
+
+        ++this.gameCount;
+        document.getElementById ("game-count").innerHTML = this.gameCount;
+
+        ++this.lostCount;
+        document.getElementById ("lost-count").innerHTML = this.lostCount;
+
+        for (var i = 0; i < this.theGuess.length; i++)
+        {   // Show the letters the player missed in red...
+
+            if (this.theGuess.charAt (i) === "*")
+            {   var theLetter = document.getElementById ("L" + i);
+
+                theLetter.style.color = "red";
+                theLetter.innerHTML = this.theWord.charAt (i);
+            }
+        }
+
+        // To display the letters the player didn't guess, the game has to
+        // pause here (I can't automatically call startGame() to start the
+        // next round).  So I need a way for the player to start the next
+        // round.  The play button should only be visible when the player 
+        // didn't guess the word.
+
+        document.getElementById ("play-button").style.display = "inline";
+    },
+
     keyPress: function (event)
     {   // What happens when a key is pressed?
-    
+
+        // The game actually doesn't end when missCount = 0.  There's nothing here that
+        // does that.  I could add and remove action listeners depending on whether I
+        // want game play to continue, or I could just...
+
+        if (this.missCount == 0) return;
+
+        // So the game isn't over...
+
         var validKeys = "abcdefghijklmnopqrstuvwxyz";
         var keyFound = false;
 
@@ -156,7 +229,7 @@ var theGame =
                 keyFound = true;
         }
 
-        if (!keyFound)
+        if (!keyFound)  
         {   alert ("Select any letter...");
 
         }
@@ -192,8 +265,6 @@ var theGame =
                             newGuess = newGuess + this.theWord.charAt (j);
                         else
                             newGuess = newGuess + this.theGuess.charAt (j);
-                            
-                        console.log ("newGuess: " + newGuess);
                     }
 
                     this.theGuess = newGuess;
@@ -216,34 +287,46 @@ var theGame =
                     ++this.winCount;
                     document.getElementById ("win-count").innerHTML = this.winCount;
 
-                    this.selectWord ();
+                    this.playGame ();
 
                     alert ("Hooray!  You got that one.");
+//                     document.getElementById("tada").play ();
                 }
             }
             else
             {   // but if the letter is not in the word, increment missCount.  If missCount is 10,
                 // the player lost this round
 
-                ++this.missCount;
+                --this.missCount;
 
-                if (this.missCount == 10)
-                {   ++this.gameCount;
-                    document.getElementById ("game-count").innerHTML = this.gameCount;
+                var missCount = document.getElementById ("miss-count");
+                var missP = document.getElementById ("miss-p");
 
-                    ++this.lostCount;
-                    document.getElementById ("lost-count").innerHTML = this.lostCount;
+                document.getElementById("miss-count").innerHTML = this.missCount;
 
-                    this.selectWord ();
-
-                    alert ("Oh no!  Better luck with this one.");
+                if (this.missCount < 5)
+                {   missCount.style.color = "yellow";
+                    missP.style.color = "yellow";
                 }
+
+                if (this.missCount < 3)
+                {   missCount.style.color = "red";
+                    missP.style.color = "red";
+                }
+
+                if (this.missCount == 1)
+                {   missCount.style.fontWeight = "bold";
+                    missP.style.fontWeight = "bold";
+                }
+
+                if (this.missCount == 0)
+                    this.youLose();
             }
         }
     }
 };
 
-theGame.selectWord ();
+theGame.playGame ();
 
 document.onkeypress = function ()
 {  theGame.keyPress(event);
