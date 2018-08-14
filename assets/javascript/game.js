@@ -54,6 +54,13 @@ var theGame =
     winCount: 0,
     maxLength: 16,  // The longest string in wordList is 16 characters long
 
+    // audio
+
+    blop: new Audio("assets/blop.mp3"),     // audio for an incorrect letter guess
+    loser: new Audio("assets/loser.mp3"),   // audio for loser
+    tada: new Audio("assets/ta-da.mp3"),    // audio for winner
+    ting: new Audio("assets/ting.mp3"),     // audio for a correct letter guess
+    
     // begin button methods
     //
     // The methods implement the buttons
@@ -143,6 +150,12 @@ var theGame =
         // missed the last word
 
         document.getElementById ("play-button").style.display = "none";
+
+//         // lower audio volume for sound effects
+// 
+//         bloop.volume = 0.75;
+//         loser.volume = 0.5;
+//         tada.volume = 0.5;
     },
 
     playGame: function ()
@@ -209,6 +222,8 @@ var theGame =
         // didn't guess the word.
 
         document.getElementById ("play-button").style.display = "inline";
+
+        this.loser.play();
     },
 
     keyPress: function (event)
@@ -281,6 +296,8 @@ var theGame =
                 // the user they have won, increment gameCount and winCount and set up the page
                 // for another game
 
+                this.ting.play();
+
                 if (this.theWord == this.theGuess)
                 {   ++this.gameCount;
                     document.getElementById ("game-count").innerHTML = this.gameCount;
@@ -290,14 +307,14 @@ var theGame =
 
                     this.playGame ();
 
-                    alert ("Hooray!  You got that one.");
-//                     document.getElementById("tada").play ();
-                }
+                    this.tada.play();
+}
             }
             else
             {   // but if the letter is not in the word, increment missCount.  If missCount is 10,
                 // the player lost this round
 
+                this.blop.play();
                 --this.missCount;
 
                 var missCount = document.getElementById ("miss-count");
@@ -306,8 +323,8 @@ var theGame =
                 document.getElementById("miss-count").innerHTML = this.missCount;
 
                 if (this.missCount < 5)
-                {   missCount.style.color = "yellow";
-                    missP.style.color = "yellow";
+                {   missCount.style.color = "brown";
+                    missP.style.color = "brown";
                 }
 
                 if (this.missCount < 3)
