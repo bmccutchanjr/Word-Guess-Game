@@ -12,10 +12,11 @@ var theGame =
                 "EDDARD STARK",
                 "GIANTS",
                 "HODOR",
-                "HOUSE LANISTER",
+                "HOUSE LANNISTER",
                 "HOUSE MARTELL",
                 "HOUSE MORMONT",
                 "HOUSE STARK",
+                "HOUSE TYRELL",
                 "IRON ISLANDS",
                 "JON SNOW",
                 "KHAL DROGO",
@@ -153,7 +154,7 @@ var theGame =
         var num = Math.floor(Math.random() * this.wordList.length);
         this.theWord = this.wordList[num];
 
-        document.getElementById("the-word").style.width = (this.theWord.length * 45 +7) + "px";
+        document.getElementById("the-word").style.width = ((this.theWord.length * 45) + 17) + "px";
 
         // Now that all games spaces are re-initialed build the game board for the new
         // word
