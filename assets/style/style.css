@@ -29,7 +29,6 @@ body
 header
 {   background-color: var(--head-bg-color);
     border-color: var(--head-border-color);
-    /* border-radius: 30px; */
     border-radius: var(--radius);
     border-style: solid;
     border-width: 2px;
@@ -97,13 +96,6 @@ main
     border-color: white;
 }
 
-/* 
-.button-bar button:visited
-{   background-color: var(--head-bg-color);
-    border-color: var(--head-border-color);
-}
-*/
-
 #instructions
 {   border: 1px solid black;
     border-radius: 3px;
@@ -117,8 +109,7 @@ main p
 }
 
 #the-word
-{   /* background: #dddddd; */  
-    background: url("../images/128-196.jpg");   
+{   background: url("../images/128-196.jpg");   
     border: 1px solid black;
     border-radius: 30px;
     height: auto;
@@ -128,7 +119,7 @@ main p
     padding: 5px;
     padding-left: 30px;
     padding-right: 35px;
-    width: 75%;
+    width: 80%;
 }
 
 .letter
@@ -142,7 +133,6 @@ main p
     font-family: 'Caveat Brush', cursive;
     font-size: 30px;
     height: 40px;
-    /* justify-content: center; */
     margin-bottom: 5px;
     margin-left: 5px;
     margin-top: 5px;
@@ -184,13 +174,12 @@ footer
     border-radius: 15px;
     border-style: solid;
     border-width: 1px;
-    display: flex;
     font-size: 10px;
     height: auto;
-    justify-content: center;
     margin: 10px auto;
     margin-bottom: 0px;
     padding: 10px;
+    text-align: center;
     width: 95%;
 }
 
@@ -213,11 +202,7 @@ footer
     main
     {   font-size: 14px;
     }
-/* 
-    #the-word
-    {   width: 50%;
-    }
-*/ 
+
     .letter
     {   font-size: 29px;
         height: 35px;
@@ -238,15 +223,11 @@ footer
     main
     {   font-size: 14px;
     }
-/*
-    #the-word
-    {   width: 50%;
-    }
-*/
+
     .letter
     {   font-size: 24px;
         height: 30px;
-        padding: 3px;
+        padding: 2px;
         width: 30px;
     }
 }
@@ -282,13 +263,9 @@ footer
     main
     {   font-size: 12px;
     }
-/* 
-    #the-word
-    {   width: 50%;
-    }
-*/ 
+
     .letter
-    {   font-size: 19px;
+    {   font-size: 21px;
         height: 25px;
         padding: 2px;
         width: 25px;

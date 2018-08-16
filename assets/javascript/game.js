@@ -171,6 +171,57 @@ var theGame =
     // begin game play methods
     //
     // The following methods implement the game play
+    
+    calcWordWidth ()
+    {   // One more attempt to dynamically set the width of the word box
+        // to fit the letter elements and no extra space
+
+        // first, grab the width of the <body> and <main> elements 
+        var pageWidth = document.body.offsetWidth;
+        var mainDiv = document.getElementById ("main");
+        var mainWidth = mainDiv.offsetWidth;
+
+        // Next, since I can't directly access the width of the letter box elements,
+        // I'll have to assign them based on breakpoints defined in the @media queries
+        // of my style sheet
+
+        var elementWidth = 40;
+        if (pageWidth < 576)
+            elementWidth = 25;
+        else if (pageWidth < 768)
+            elementWidth = 30;
+        else if (pageWidth < 992)
+            elementWidth = 35;
+
+        // Now, calculate the required minimum width of #the-word, again using values
+        // assigned to margin and padding in the style sheet
+
+        // #the-word should be elementWidth * the number of .letters in the word
+        var wordWidth = this.theWord.length * elementWidth;
+
+        // plus 5px margin-left on each .letter element
+        wordWidth = wordWidth + (this.theWord.length * 5);
+
+        // plus 5px to center the .letter elements (because there is no margin-right 
+        // the .letter elemens, the right side of #the-word is smaller than the left)
+        wordWidth = wordWidth + 5;
+
+        // plus 30px due to padding-left and padding-right on #the-word
+        wordWidth = wordWidth + 60;
+
+        // plus 2px due to the border
+        wordWidth = wordWidth + 2;
+        
+        // Now that I have calculated the minimum width of #the-word, I need to apply
+        // it to the element.  But I don't want it to exceed the width of its parent
+        // element (the <main> element).  <main> has 20px of padding on the left and
+        // right
+
+        if (wordWidth > (mainWidth - 40))
+            document.getElementById("the-word").style.width = "100%";
+        else
+            document.getElementById("the-word").style.width = wordWidth + "px";
+    },
 
     playGame: function ()
     {   // select a new word display a blank game board
@@ -207,6 +258,8 @@ var theGame =
         var num = Math.floor(Math.random() * this.wordList.length);
         this.theWord = this.wordList[num];
 
+        this.calcWordWidth ();
+        
         // Now that all games spaces are re-initialed build the game board for the new
         // word
 
