@@ -50,7 +50,7 @@ var theGame =
     letterList: "",
     gameCount: 0,
     lostCount: 0,
-    missCount: 10,
+    guessRemain: 10,
     winCount: 0,
     maxLength: 16,  // The longest string in wordList is 16 characters long
 
@@ -65,19 +65,75 @@ var theGame =
     //
     // The methods implement the buttons
 
+    displayGuesses (letter)
+    {   // update the list of letters the player has guessed
+
+        if (this.letterList.length == 0)
+            this.letterList = letter;
+        else
+            this.letterList = this.letterList + ", " + letter;
+            
+        document.getElementById ("your-guesses").textContent =
+            "You have selected: " + this.letterList;
+    },
+
+    displayGuessRemain (num)
+    {   // update the number of guesses the player has remaining
+
+        var missP = document.getElementById ("guess-remain");
+        missP.textContent =
+            "You have " + num + " guesses remaining";
+
+        missP.style.color = "black";
+        missP.style.fontWeight = "normal";
+
+        if (this.guessRemain < 5)
+            missP.style.color = "brown";
+
+        if (this.guessRemain < 3)
+            missP.style.color = "red";
+
+        if (this.guessRemain == 1)
+            missP.style.fontWeight = "bold";
+    },
+
+    displayGameCount (num)
+    {   // update the number of games the player has played
+
+        document.getElementById ("game-count").textContent =
+            "You have played " + num + " games";
+    },
+
+    displayWinCount (num)
+    {   // update the number of times the player has wone
+        document.getElementById ("win-count").textContent =
+            "You have solved " + num + " words";
+    },
+
+    displayLoseCount (num)
+    {   // update the number of guesses the player has remaining
+
+        document.getElementById ("lost-count").textContent =
+            "You have lost " + num + " times";
+    },
+
     resetStats: function ()
     {   // This method is called to reset the game statistics
 
         this.letterList = "";
-        document.getElementById ("your-guesses").innerHTML = this.letterList;
+        this.displayGuesses (this.letterList);
+
         this.gameCount = 0;
-        document.getElementById ("game-count").innerHTML = this.gameCount;
+        this.displayGameCount (this.gameCount);
+
         this.lostCount = 0;
-        document.getElementById ("lost-count").innerHTML = this.lostCount;
-        this.missCount = 10;
-        document.getElementById ("miss-count").innerHTML = this.missCount;
+        this.displayLoseCount (this.lostCount);
+
+        this.guessRemain = 10;
+        this.displayGuessRemain (this.guessRemain);
+
         this.winCount = 0;
-        document.getElementById ("win-count").innerHTML = this.winCount;
+        this.displayWinCount (this.winCount);
     },
 
     getHint: function ()
@@ -102,11 +158,11 @@ var theGame =
             // *    change the button text to "HIDE INSTRUCTIONS"
 
             instrID.style.display = "block";
-            buttonID.innerHTML = "HIDE INSTRUCTIONS";
+            buttonID.textContent = "HIDE INSTRUCTIONS";
         }
         else
         {   instrID.style.display = "none";
-            buttonID.innerHTML = "SHOW INSTRUCTIONS";
+            buttonID.textContent = "SHOW INSTRUCTIONS";
         }
     },
 
@@ -116,65 +172,50 @@ var theGame =
     //
     // The following methods implement the game play
 
-    initializeTheGame: function ()
-    {   // resets all of the game pieces and temporary variables used to track the players
-        // guesses
+    playGame: function ()
+    {   // select a new word display a blank game board
 
-        this.theGuess = "";
+        // lower audio volume for sound effects
+
+        this.blop.volume = 0.25;
+        this.loser.volume = 0.25;
+        this.tada.volume = 0.25;
+
+        // hide the play button until its needed
+
+        document.getElementById ("play-button").style.display = "none";
+
+        // Clear the list of guessed letters and reset the remaining tries
         this.letterList = "";
-        document.getElementById ("your-guesses").innerHTML = "";
-        this.missCount = 10;
+        this.displayGuesses(this.letterList);
+        this.guessRemain = 10;
+        this.displayGuessRemain(this.guessRemain);
 
-        // Hide the entire game board and clear any text displayed in each game space
+        // clear the entire game board...hide all the letter boxes and
+        // clear thier content
 
         for (var i = 0; i < this.maxLength; i++)
-        {   idName = "L" + i;
-    
-            var thisLetter = document.getElementById(idName);
-            thisLetter.innerHTML = "";
+        {   thisLetter = document.getElementById ("L" + i);
+
+            thisLetter.textContent = "";
             thisLetter.style.color = "black";
             thisLetter.style.display = "none";
             thisLetter.style.visibility = "visible";
         }
 
-        var missCount = document.getElementById("miss-count");
-        var missP = document.getElementById("miss-p");
-
-        missCount.innerHTML = this.missCount;
-        missCount.style.color = "black";
-        missP.style.color = "black";
-        missCount.style.fontWeight = "normal";
-        missP.style.fontWeight = "normal";
-
-        // The play button should only be visible if the player
-        // missed the last word
-
-        document.getElementById ("play-button").style.display = "none";
-
-//         // lower audio volume for sound effects
-// 
-//         bloop.volume = 0.75;
-//         loser.volume = 0.5;
-//         tada.volume = 0.5;
-    },
-
-    playGame: function ()
-    {   // select a new word display a blank game board
-
-        this.initializeTheGame ();
-
         // pick a word
         var num = Math.floor(Math.random() * this.wordList.length);
         this.theWord = this.wordList[num];
 
-        document.getElementById("the-word").style.width = ((this.theWord.length * 45) + 17) + "px";
-
         // Now that all games spaces are re-initialed build the game board for the new
         // word
+
+        this.theGuess = "";
 
         for (var i = 0; i < this.theWord.length; i++)
         {   
             // initialize theGuess to all '*'
+
             if (this.theWord.charAt (i) === "'")
                 this.theGuess = this.theGuess + "'";
             else if (this.theWord.charAt (i) === " ")
@@ -182,16 +223,21 @@ var theGame =
             else
                 this.theGuess = this.theGuess + "*";
 
+            // and display the letter boxes that coorespond to letters in the selected word
+
             idName = "L" + i;
     
             var thisLetter = document.getElementById(idName);
-            thisLetter.style.display = "flex";
+            thisLetter.style.display = "inline";
+            thisLetter.textContent = "";
+            thisLetter.style.color = "black";
+            thisLetter.style.visibility = "visible";
 
             if (this.theWord.charAt(i) === " ")
                 thisLetter.style.visibility = "hidden";
 
             if (this.theWord.charAt(i) === "'")
-                thisLetter.innerHTML = "'";
+                thisLetter.textContent = "'";
         }
     },
 
@@ -199,10 +245,10 @@ var theGame =
     {   // If the player didn't guess the word in the allowed number of tries
 
         ++this.gameCount;
-        document.getElementById ("game-count").innerHTML = this.gameCount;
+        this.displayGameCount (this.gameCount);
 
         ++this.lostCount;
-        document.getElementById ("lost-count").innerHTML = this.lostCount;
+        this.displayLoseCount (this.lostCount);
 
         for (var i = 0; i < this.theGuess.length; i++)
         {   // Show the letters the player missed in red...
@@ -211,7 +257,7 @@ var theGame =
             {   var theLetter = document.getElementById ("L" + i);
 
                 theLetter.style.color = "red";
-                theLetter.innerHTML = this.theWord.charAt (i);
+                theLetter.textContent = this.theWord.charAt (i);
             }
         }
 
@@ -229,11 +275,11 @@ var theGame =
     keyPress: function (event)
     {   // What happens when a key is pressed?
 
-        // The game actually doesn't end when missCount = 0.  There's nothing here that
+        // The game actually doesn't end when guessRemain = 0.  There's nothing here that
         // does that.  I could add and remove action listeners depending on whether I
         // want game play to continue, or I could just...
 
-        if (this.missCount == 0) return;
+        if (this.guessRemain == 0) return;
 
         // So the game isn't over...
 
@@ -252,14 +298,9 @@ var theGame =
         else
         {   // The key pressed is a letter, so...
 
-            // Add the letter to thelist of letters selected so far
+            this.displayGuesses (event.key.toUpperCase());
 
-            if (this.letterList.length == 0)
-                this.letterList = event.key.toUpperCase ();
-            else
-                this.letterList = this.letterList + ", " + event.key.toUpperCase ();
-            
-            document.getElementById ("your-guesses").innerHTML = this.letterList;
+            // and check if the letter selected is in the word
 
             var matchFound = false;
 
@@ -272,7 +313,7 @@ var theGame =
                     matchFound = true;
 
                     var thisLetter = document.getElementById("L" + i);
-                    thisLetter.innerHTML = this.theWord.charAt(i);
+                    thisLetter.textContent = this.theWord.charAt(i);
 
                     var newGuess = "";
 
@@ -287,58 +328,42 @@ var theGame =
                 }
             }
 
-            // and finally
+            // and finally...
 
             if (matchFound)
-            {   // The player selected a letter in the word.
+            {   // event.key matches a letter in the word.  Test if there are any
+                // unguessed letters in the word (this.theWord === this.theGuess).
                 //
-                // We have a winner if this.theWord === this.theGuess.  Display an alert to tell
-                // the user they have won, increment gameCount and winCount and set up the page
+                // If we have a winner, updtae the stats and start another round
                 // for another game
-
-                this.ting.play();
 
                 if (this.theWord == this.theGuess)
                 {   ++this.gameCount;
-                    document.getElementById ("game-count").innerHTML = this.gameCount;
+                    this.displayGameCount (this.gameCount);
 
                     ++this.winCount;
-                    document.getElementById ("win-count").innerHTML = this.winCount;
+                    this.displayWinCount (this.winCount);
 
                     this.playGame ();
 
                     this.tada.play();
-}
+                }
+                else
+                    this.ting.play();
             }
             else
-            {   // but if the letter is not in the word, increment missCount.  If missCount is 10,
+            {   // but if the letter is not in the word, dencrement guessRemain.  If guessRemain is 10,
                 // the player lost this round
 
-                this.blop.play();
-                --this.missCount;
+                --this.guessRemain;
 
-                var missCount = document.getElementById ("miss-count");
-                var missP = document.getElementById ("miss-p");
-
-                document.getElementById("miss-count").innerHTML = this.missCount;
-
-                if (this.missCount < 5)
-                {   missCount.style.color = "brown";
-                    missP.style.color = "brown";
-                }
-
-                if (this.missCount < 3)
-                {   missCount.style.color = "red";
-                    missP.style.color = "red";
-                }
-
-                if (this.missCount == 1)
-                {   missCount.style.fontWeight = "bold";
-                    missP.style.fontWeight = "bold";
-                }
-
-                if (this.missCount == 0)
+                if (this.guessRemain == 0)
                     this.youLose();
+                else
+                {    this.blop.play();
+
+                    this.displayGuessRemain (this.guessRemain);
+                }
             }
         }
     }

@@ -59,7 +59,6 @@ h2
 main
 {   background-color: rgba(255, 255, 255, 0.5);
     border: 2px solid black;
-    /* border-radius: 5px; */
     border-radius: var(--radius);
     height: auto;
     margin: 0px auto;
@@ -81,13 +80,16 @@ main
 .button-bar button
 {   background-color: var(--head-bg-color);
     border-color: var(--head-border-color);
-    border-radius: 3px;
+    border-radius: 10px;
     border-style: solid;
-    border-width: 2px;
+    border-width: 1px;
     color: --text-color;
+    font-size: 10px;
     margin-left: 10px;
     margin-right: 10px;
     padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .button-bar button:hover
@@ -115,19 +117,23 @@ main p
 }
 
 #the-word
-{   background: #dddddd;   
+{   /* background: #dddddd; */  
+    background: url("../images/128-196.jpg");   
     border: 1px solid black;
-    border-radius: 10px;
+    border-radius: 30px;
     height: auto;
     margin: 0 auto;
     margin-bottom: 20px;
     overflow: auto;
     padding: 5px;
-    padding-right: 5px;
+    padding-left: 30px;
+    padding-right: 35px;
+    width: 75%;
 }
 
 .letter
-{   border-color: black;
+{   background: white;
+    border-color: black;
     border-radius: 3px;
     border-style: solid;
     border-width: 1px;
@@ -136,11 +142,12 @@ main p
     font-family: 'Caveat Brush', cursive;
     font-size: 30px;
     height: 40px;
-    justify-content: center;
+    /* justify-content: center; */
     margin-bottom: 5px;
     margin-left: 5px;
     margin-top: 5px;
-    padding-bottom: 5px;
+    padding: 5px;
+    text-align: center;
     width: 40px;
 }
 
@@ -149,6 +156,7 @@ main p
 
 /* begin style specific to sticky footer
 */
+
 
 body, html
 {   height: 100%;
@@ -198,6 +206,31 @@ footer
     {   background-color: rgba(0, 255, 0, .5);
     }
 
+    main
+    {   width: 85%;
+    }
+
+    main
+    {   font-size: 14px;
+    }
+/* 
+    #the-word
+    {   width: 50%;
+    }
+*/ 
+    .letter
+    {   font-size: 29px;
+        height: 35px;
+        padding: 3px;
+        width: 35px;
+    }
+}
+
+@media screen and (max-width: 768px)
+{   .wrapper
+    {   background-color: rgba(0, 0, 255, .5);
+    }
+
     header, footer, main
     {   width: 95%;
     }
@@ -205,12 +238,16 @@ footer
     main
     {   font-size: 14px;
     }
-
+/*
+    #the-word
+    {   width: 50%;
+    }
+*/
     .letter
-    {   font-size: 29px;
-        height: 35px;
+    {   font-size: 24px;
+        height: 30px;
         padding: 3px;
-        width: 35px;
+        width: 30px;
     }
 }
 
@@ -245,7 +282,11 @@ footer
     main
     {   font-size: 12px;
     }
-
+/* 
+    #the-word
+    {   width: 50%;
+    }
+*/ 
     .letter
     {   font-size: 19px;
         height: 25px;
