@@ -322,6 +322,7 @@ var theGame =
 
         document.getElementById ("play-button").style.display = "inline";
 
+        this.loser.load();
         this.loser.play();
     },
 
@@ -399,9 +400,11 @@ var theGame =
 
                     this.playGame ();
 
+                    this.tada.load();
                     this.tada.play();
                 }
                 else
+                    this.ting.load();
                     this.ting.play();
             }
             else
@@ -413,7 +416,8 @@ var theGame =
                 if (this.guessRemain == 0)
                     this.youLose();
                 else
-                {    this.blop.play();
+                {   this.blop.load();
+                    this.blop.play();
 
                     this.displayGuessRemain (this.guessRemain);
                 }
