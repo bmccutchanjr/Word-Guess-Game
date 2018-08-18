@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css?family=MedievalSharp');
 
 :root
-{   --head-bg-color: rgba(0, 128, 0, 0.5);
+{   --head-bg-color: rgba(0, 128, 0, 0.75);
     --head-border-color: #004400;
     --head-color: black;
     --text-color: black;
