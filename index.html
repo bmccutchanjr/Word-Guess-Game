@@ -16,7 +16,9 @@
     </style>
 </head>
 
-<body onresize="theGame.calcWordWidth()">
+<body onload="theGame.playGame()"
+      onkeypress="theGame.keyPress(event)"
+      onresize="theGame.calcWordWidth()">
     <div class="wrapper">
         <header class="background">
             <div class="header">

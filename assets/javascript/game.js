@@ -408,7 +408,7 @@ var theGame =
                     this.ting.play();
             }
             else
-            {   // but if the letter is not in the word, dencrement guessRemain.  If guessRemain is 10,
+            {   // but if the letter is not in the word, denrement guessRemain.  If guessRemain is 0,
                 // the player lost this round
 
                 --this.guessRemain;
@@ -425,9 +425,3 @@ var theGame =
         }
     }
 };
-
-theGame.playGame ();
-
-document.onkeypress = function ()
-{  theGame.keyPress(event);
-}
